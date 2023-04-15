@@ -165,6 +165,8 @@ urlpatterns = [
 + ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 # ⌨️ (0:44:30) Item detail
+- app_name
+  - urls.pyに設定することで，`item:detail`のようなURLの名前をitemというapp_nameをもつ，urls.pyを参照するというように解決することができる
 # ⌨️ (0:55:56) Signing up
 # ⌨️ (1:10:06) Logging in
 # ⌨️ (1:15:44) Adding items
