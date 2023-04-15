@@ -168,6 +168,7 @@ urlpatterns = [
 - app_name
   - urls.pyに設定することで，`item:detail`のようなURLの名前をitemというapp_nameをもつ，urls.pyを参照するというように解決することができる
 # ⌨️ (0:55:56) Signing up
+
 # ⌨️ (1:10:06) Logging in
 # ⌨️ (1:15:44) Adding items
 # ⌨️ (1:28:25) Dashboard
