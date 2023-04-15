@@ -10,6 +10,7 @@ WORKDIR /code
 
 # 依存関係をコピー・インストール
 COPY requirements.txt /code/
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # プロジェクトをコピー
