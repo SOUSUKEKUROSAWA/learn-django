@@ -172,6 +172,20 @@ urlpatterns = [
 # ⌨️ (1:15:44) Adding items
 - templateはなるべく使いまわせるように工夫する
 # ⌨️ (1:28:25) Dashboard
+- `python manage.py startapp dashboard`
+- アプリの分け方
+  - 単一責任原則
+    - 各アプリケーションは、一つの機能や目的に焦点を当てるべき
+      - そうすることで，結合度を抑えられ，再利用性も上がる
+    - URLで分けるというのもアリかも？
+      - 親アプリのurls.pyにルートを書き込む際に綺麗に分かれる
+        - item/
+        - dashboard/
+  - 具体例
+    - 認証と認可
+    - ブログ
+    - コメント
+    - 通知
 # ⌨️ (1:32:36) Delete items
 # ⌨️ (1:36:58) Edit items
 # ⌨️ (1:40:01) Searching
