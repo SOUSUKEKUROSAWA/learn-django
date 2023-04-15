@@ -169,8 +169,8 @@ urlpatterns = [
   - urls.pyに設定することで，`item:detail`のようなURLの名前をitemというapp_nameをもつ，urls.pyを参照するというように解決することができる
 # ⌨️ (0:55:56) Signing up
 - Djangoが用意しているUserモデルを使用する
-# ⌨️ (1:10:06) Logging in
 # ⌨️ (1:15:44) Adding items
+- templateはなるべく使いまわせるように工夫する
 # ⌨️ (1:28:25) Dashboard
 # ⌨️ (1:32:36) Delete items
 # ⌨️ (1:36:58) Edit items
@@ -185,3 +185,5 @@ urlpatterns = [
   - mobileフレンドリーにする設定
 - `href="{% url 'contact' %}"`
   - urls.pyでname指定したルートを設置できる
+- `form.save(commit=False)`
+  - オブジェクトを作成するだけで、保存はしない
