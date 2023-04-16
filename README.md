@@ -217,6 +217,33 @@ def items(request):
     })
 ```
 # ⌨️ (1:53:43) Communication
+- `python manage.py startapp conversation`
+- メッセージ作成までの流れ
+  - detail.html `/items/<item_pk>/`
+    - contact sender `{% url 'conversation:new' item.id %}`をクリック
+  - `conversation/new.html`がレンダリング
+    - Send `<form action="." method="post">`をクリック
+      - `.`は現在のURL `/inbox/new/<item_pk>/`を指している
+  - conversationsテーブルとconversationMessagesテーブルにデータを保存
+  - detail.htmlへリダイレクト
+- `conversations.first().id`でアクセスしなければならない理由
+  - conversationsに入っているデータの型がQueryset型だから
+    - ロジック的には単一のデータしか入らなくても，この取得方法でデータにアクセスしなければいけない
+```diff
+conversations = Conversation.objects.filter(item=item).filter(members__in=[request.user.id])
+
+if conversations:
+-    return redirect('conversation:detail', pk=conversations.id)
++    return redirect('conversation:detail', pk=conversations.first().id)
+```
+## .gitignoreの内容が反映されていない問題
+- 状況
+  - プロジェクトの途中で，gitignoreを作成していなかったことに気づき作成
+  - しかし，その内容が反映されない
+- 原因
+  - 途中から.gitignoreを作成したため，指定したファイルが既にGitの管理対象に登録されてしまっていたから
+- 解決策
+  - `git rm -r --cached .`
 # ⌨️ (2:23:00) Summary
 
 ---
@@ -245,3 +272,28 @@ def items(request):
     - 特定のカラムのなかで大文字小文字を区別せずにquery文字列を含むデータ取得している
       - 複数カラムの検索条件を付与したい場合は`from django.db.models import Q`を利用すると簡単に書くことができる
       - 複数の条件を付与したいときは，同じオブジェクトにフィルタリングを繰り返す形で絞り込んでいけばよい
+- ***startappをする度にsettings.pyに追記***
+- ***モデルを作成したらadmin.pyに指定する***
+- `related_name`オプション
+  - リレーションの逆方向の関連を定義する 
+    - 関連名をカスタマイズできる
+      - 明示的になり，クエリなどもより簡素に記述することができる
+- Messageモデル
+  - django組み込みで持っているメッセージフレームワーク（通知機能を実装する用）はMessageモデルを使用するため，同じ名前にするとクラッシュしてしまう可能性があるのでConversationMessageモデルという名前で作成している
+- `conversation.members.all`
+  - ただ，`conversation.members`とするだけでは，会話のメンバーのオブジェクトは取得できない
+    - これは，membersフィールドがManyToManyFieldとして定義されており、Djangoではこのタイプのフィールドに対して関連オブジェクトを取得するために、オブジェクト関連マネージャ（Object-Related Manager）を使用する必要があるから
+- idとpkの使い分け
+  - id
+    - 各Djangoモデルに自動的に追加されるフィールド
+    - 整数のオートインクリメントフィールド（AutoField）として設定され、各レコードに一意の識別子を提供します。
+  - pk
+    - モデルの主キーを参照するショートカット
+    - モデルにおいて、主キーが明示的に定義されていない場合は id が主キーとして扱われます。
+      - しかし、モデルにカスタム主キーが定義されている場合、pk はそのカスタム主キーを指します。
+  - 使い分け
+    - id を使うべき場合
+      - モデルにデフォルトの id フィールドがあり、特定のレコードにアクセスしたい場合。
+    - pk を使うべき場合
+      - モデルがカスタム主キーを持っているかどうかに関わらず、一意の識別子を使用してレコードにアクセスしたい場合。
+        - pk はモデルの主キーに関わらず一貫して動作するため、コードの可読性や保守性が向上します。
