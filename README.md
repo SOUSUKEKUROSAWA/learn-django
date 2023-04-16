@@ -186,7 +186,6 @@ urlpatterns = [
     - ブログ
     - コメント
     - 通知
-# ⌨️ (1:32:36) Delete items
 # ⌨️ (1:36:58) Edit items
 # ⌨️ (1:40:01) Searching
 # ⌨️ (1:53:43) Communication

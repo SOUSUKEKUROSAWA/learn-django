@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from item.models import Item
+from django.shortcuts import get_object_or_404
 
 @login_required
 def index(request):
