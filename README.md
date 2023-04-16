@@ -186,8 +186,36 @@ urlpatterns = [
     - ブログ
     - コメント
     - 通知
-# ⌨️ (1:36:58) Edit items
 # ⌨️ (1:40:01) Searching
+## 選択したカテゴリーの色を変更できない問題
+- 状況
+  - カテゴリを選択
+  - queryに載せてviewに渡す
+  - category_idという名前で元のtemplateに返す
+  - template上でcategory.idとcategory_idが一致するものの背景色を変更するifディレクティブを追加
+  - しかし，色が反映されない
+- 原因
+  - category_idが文字列型で渡されていたこと
+- 解決策
+  - `myproject\item\views.py`
+```diff
+def items(request):
+    query = request.GET.get('query', '') # 第2引数はデフォルト値
+    category_id = request.GET.get('category', 0)
+    categories = Category.objects.all()
+    items = Item.objects.filter(is_sold=False)
+
+    if query:
+        items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
+
+    return render(request, 'item/items.html', {
+        'items': items,
+        'query': query,
+        'categories': categories,
+-         'category_id': category_id,
++         'category_id': int(category_id),
+    })
+```
 # ⌨️ (1:53:43) Communication
 # ⌨️ (2:23:00) Summary
 
@@ -213,3 +241,7 @@ urlpatterns = [
       - 開発者間でデータベースの状態が異なることがあるため
       - データベースのサイズが大きくなることがあるため
       - 機密情報の漏洩防止
+  - `<model instance>.filter(<column name>__icontains=<query>)`
+    - 特定のカラムのなかで大文字小文字を区別せずにquery文字列を含むデータ取得している
+      - 複数カラムの検索条件を付与したい場合は`from django.db.models import Q`を利用すると簡単に書くことができる
+      - 複数の条件を付与したいときは，同じオブジェクトにフィルタリングを繰り返す形で絞り込んでいけばよい
