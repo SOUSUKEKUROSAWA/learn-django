@@ -244,7 +244,6 @@ if conversations:
   - 途中から.gitignoreを作成したため，指定したファイルが既にGitの管理対象に登録されてしまっていたから
 - 解決策
   - `git rm -r --cached .`
-# ⌨️ (2:23:00) Summary
 
 ---
 
